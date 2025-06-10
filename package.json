@@ -8,12 +8,21 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "@prisma/extension-accelerate": "^2.0.1",
+    "@uploadthing/react": "^7.3.1",
     "next": "15.3.3",
+    "node-fetch": "^3.3.2",
+    "pdf-parse": "^1.1.1",
     "postcss": "^8.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
+    "uploadthing": "^7.7.2",
     "zod": "^3.25.56",
     "zustand": "^5.0.5"
   },
@@ -21,11 +30,14 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "prisma": "^6.9.0",
     "tailwindcss": "^4.1.8",
+    "tsx": "^4.19.4",
     "typescript": "^5"
   }
 }
