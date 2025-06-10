@@ -1,8 +1,8 @@
 import fetch from "node-fetch";
-import pdfParse from "pdf-parse";
 import prisma from "@/lib/prisma";
 
 export async function pdfParseAndStore(fileUrl: string) {
+  const pdfParse = (await import("pdf-parse")).default;
   const response = await fetch(fileUrl);
   const arrayBuffer = await response.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
