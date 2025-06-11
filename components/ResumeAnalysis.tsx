@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import JobMatches from "./JobMatches";
 
 export default function ResumeAnalysis() {
   const [analysis, setAnalysis] = useState<string | null>(null);
@@ -40,6 +41,8 @@ export default function ResumeAnalysis() {
           {analysis}
         </div>
       )}
+
+      <JobMatches analysis={analysis ? JSON.parse(analysis) : null} />
     </div>
   );
 }
