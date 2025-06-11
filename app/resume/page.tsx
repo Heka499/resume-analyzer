@@ -1,10 +1,10 @@
-import ResumeUploader from "@/components/ResumeUploader";
+import ResumePreview from "@/components/ResumePreview";
 
 export default function ResumePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">Upload Your Resume</h1>
-      <ResumeUploader />
-    </div>
+    <main className="p-4">
+      <h1 className="text-3xl font-semibold mb-6">Resume</h1>
+      <ResumePreview />
+    </main>
   );
 }
