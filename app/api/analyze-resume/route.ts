@@ -21,12 +21,15 @@ export async function POST() {
 
     const prompt = `
             You are a career coach analyzing a resume.
-            Please:
-            - Extract key skills
-            - Summarize professional experience
-            - Identify weak areas or gaps
-            - Suggest how to improve this resume
-            - Recommend roles that match the candidate's skills
+            First analyze the resume content and then return a JSON object with:
+            
+            {
+              "skills": [...],          // Key skills
+              "summary": "...",         // summary of experience
+              "improvementTips": "...", // suggestions to improve resume
+              "jobSearchTerms": [...]   // best job search keywords for this resume
+            }
+
             Resume content:
             ${resume.textContent}
         `;
@@ -37,9 +40,11 @@ export async function POST() {
       temperature: 0.7,
     });
 
-    const analysis = completion.choices[0].message.content;
+    const json = completion.choices[0].message.content;
 
-    return NextResponse.json({ analysis });
+    const parsed = JSON.parse(json!);
+
+    return NextResponse.json({ analysis: parsed });
   } catch (error) {
     console.error("OpenAI analysis error:", error);
     return NextResponse.json(
