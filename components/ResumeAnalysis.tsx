@@ -1,17 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import JobMatches from "./JobMatches";
-
-type Analysis = {
-  skills: string[];
-  summary: string;
-  improvementTips: string;
-  jobSearchTerms: string[];
-};
+import { useResumeStore } from "@/lib/store";
+import { useRouter } from "next/navigation";
 
 export default function ResumeAnalysis() {
-  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const router = useRouter();
+  const { analysis, setAnalysis } = useResumeStore();
   const [loading, setLoading] = useState(false);
 
   const handleAnalyze = async () => {
@@ -24,10 +19,14 @@ export default function ResumeAnalysis() {
       setAnalysis(data.analysis);
     } catch (error) {
       console.error("Error analyzing resume:", error);
-      setAnalysis(null);
+      alert("Failed to analyze resume. Please try again later.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const goToJobs = async () => {
+    router.push("/jobs");
   };
 
   return (
@@ -57,7 +56,14 @@ export default function ResumeAnalysis() {
           <p>{analysis.improvementTips}</p>
         </div>
       )}
-      {analysis && <JobMatches analysis={analysis} />}
+      {analysis && (
+        <button
+          onClick={goToJobs}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+        >
+          Find Matching Jobs
+        </button>
+      )}
 
       {!analysis && !loading && (
         <p className="mt-4 text-gray-600">
