@@ -21,16 +21,20 @@ export async function POST() {
 
     const prompt = `
             You are a career coach analyzing a resume.
-            First analyze the resume content and then return a JSON object with:
-            
-            {
-              "skills": [...],          // Key skills
-              "summary": "...",         // summary of experience
-              "improvementTips": "...", // suggestions to improve resume
-              "jobSearchTerms": [...]   // best job search keywords for this resume
-            }
+            First, analyze the resume text.
+            Then return **only** a valid JSON object with the following structure,
+            and nothing else. Do not add commentary or explanation.
+            Do NOT wrap your response in markdown.
+            Return only raw JSON.
 
-            Resume content:
+{
+  "skills": ["JavaScript", "React", "Node.js"],
+  "summary": "Short summary of experience...",
+  "improvementTips": "Suggestions to improve resume...",
+  "jobSearchTerms": ["React Developer", "Frontend Developer", "Full Stack"]
+}
+
+            Now, here is the resume text:
             ${resume.textContent}
         `;
 
@@ -40,9 +44,26 @@ export async function POST() {
       temperature: 0.7,
     });
 
-    const json = completion.choices[0].message.content;
+    // Remove markdown formatting if present
+    let raw = completion.choices[0].message.content || "";
+    if (raw.startsWith("```json")) {
+      raw = raw
+        .replace(/^```json/, "")
+        .replace(/```$/, "")
+        .trim();
+    }
 
-    const parsed = JSON.parse(json!);
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (error) {
+      console.error("OpenAI analysis error:", error);
+      console.error("Raw response:", completion.choices[0].message.content);
+      return NextResponse.json(
+        { error: "Failed to parse OpenAI response" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ analysis: parsed });
   } catch (error) {
