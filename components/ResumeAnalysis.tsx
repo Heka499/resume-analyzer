@@ -3,8 +3,15 @@
 import { useState } from "react";
 import JobMatches from "./JobMatches";
 
+type Analysis = {
+  skills: string[];
+  summary: string;
+  improvementTips: string;
+  jobSearchTerms: string[];
+};
+
 export default function ResumeAnalysis() {
-  const [analysis, setAnalysis] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleAnalyze = async () => {
@@ -17,7 +24,7 @@ export default function ResumeAnalysis() {
       setAnalysis(data.analysis);
     } catch (error) {
       console.error("Error analyzing resume:", error);
-      setAnalysis("Failed to fetch analysis.");
+      setAnalysis(null);
     } finally {
       setLoading(false);
     }
@@ -38,11 +45,25 @@ export default function ResumeAnalysis() {
 
       {analysis && (
         <div className="mt-6 whitespace-pre-wrap text-sm text-gray-800">
-          {analysis}
+          <h3 className="font-semibold">Summary:</h3>
+          <p>{analysis.summary}</p>
+          <h3 className="mt-4 font-semibold">Skills:</h3>
+          <ul className="list-disc pl-5">
+            {analysis.skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+          </ul>
+          <h3 className="mt-4 font-semibold">Improvement Tips:</h3>
+          <p>{analysis.improvementTips}</p>
         </div>
       )}
+      {analysis && <JobMatches analysis={analysis} />}
 
-      <JobMatches analysis={analysis ? JSON.parse(analysis) : null} />
+      {!analysis && !loading && (
+        <p className="mt-4 text-gray-600">
+          Click the button above to analyze your resume.
+        </p>
+      )}
     </div>
   );
 }
