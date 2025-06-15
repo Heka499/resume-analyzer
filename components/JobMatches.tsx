@@ -1,27 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useResumeStore } from "@/lib/store";
 
-type Analysis = {
-  skills: string[];
-  summary: string;
-  improvementTips: string;
-  jobSearchTerms: string[];
-};
-
-export default function JobMatches({ analysis }: { analysis: Analysis }) {
+export default function JobMatches() {
+  const { analysis } = useResumeStore();
   const [jobs, setJobs] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   const handleFindJobs = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/job-matcher", {
         method: "POST",
-        body: JSON.stringify({ keywords: analysis.jobSearchTerms }),
+        body: JSON.stringify({ keywords: analysis?.jobSearchTerms || [] }),
       });
 
       const data = await res.json();
+      console.log("Job Matches Response:", data);
       setJobs(data.jobs || []);
     } catch (error) {
       console.error("Error fetching job matches:", error);
@@ -32,6 +29,17 @@ export default function JobMatches({ analysis }: { analysis: Analysis }) {
 
   return (
     <div className="mt-6">
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder={
+          analysis?.jobSearchTerms != null
+            ? analysis.jobSearchTerms.join(" ")
+            : "Enter job search terms"
+        }
+        className="border p-2 rounded w-full mb-4"
+      />
       <button
         onClick={handleFindJobs}
         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
