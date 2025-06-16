@@ -1,19 +1,36 @@
-import { createUploadthing, type FileRouter } from "uploadthing/server";
+import {
+  createUploadthing,
+  UploadThingError,
+  type FileRouter,
+} from "uploadthing/server";
 import { pdfParseAndStore } from "@/lib/pdf-handler";
+import { cookies } from "next/headers";
 
 const f = createUploadthing();
 
 export const uploadRouter = {
   resumeUploader: f({
     pdf: { maxFileSize: "4MB", maxFileCount: 1 },
-  }).onUploadComplete(async ({ file }) => {
-    console.log("Uploaded file url:", file.ufsUrl);
+  })
+    .middleware(async ({}) => {
+      const cookieStore = await cookies();
+      const sessionId = cookieStore.get("sessionId")?.value;
 
-    // Extract and store resume content
-    await pdfParseAndStore(file.ufsUrl);
+      if (!sessionId) {
+        throw new UploadThingError("Session ID not found.");
+      }
 
-    return { success: true };
-  }),
+      return { sessionId: sessionId };
+    })
+
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Uploaded file url:", file.ufsUrl);
+
+      // Extract and store resume content
+      await pdfParseAndStore(file.ufsUrl, metadata.sessionId);
+
+      return { success: true };
+    }),
 } satisfies FileRouter;
 
 export type UploadRouter = typeof uploadRouter;
