@@ -16,7 +16,7 @@ export default function ResumePreview() {
   useEffect(() => {
     async function fetchResume() {
       try {
-        const res = await fetch("/api/resume/latest");
+        const res = await fetch("/api/resume/current");
         if (!res.ok) throw new Error("Failed to fetch resume");
         const data = await res.json();
         setResume(data);
