@@ -25,6 +25,7 @@ model Resume {
   fileUrl     String
   textContent String
   uploadedAt  DateTime @default(now())
+  sessionId   String?
 
   userId      String?
   user        User? @relation(fields: [userId], references: [id])
