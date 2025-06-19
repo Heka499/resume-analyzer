@@ -36,7 +36,7 @@ export default function ResumeAnalysis() {
       </h2>
       <button
         onClick={handleAnalyze}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
         disabled={loading}
       >
         {loading ? "Analyzing..." : "Analyze Resume with AI"}
@@ -47,7 +47,7 @@ export default function ResumeAnalysis() {
           <h3 className="font-semibold">Summary:</h3>
           <p>{analysis.summary}</p>
           <h3 className="mt-4 font-semibold">Skills:</h3>
-          <ul className="list-disc pl-5">
+          <ul className="list-disc list-inside mt-1 pl-1 grid lg:grid-cols-4 md:grid-cols-3 gap-2">
             {analysis.skills.map((skill, index) => (
               <li key={index}>{skill}</li>
             ))}
@@ -59,7 +59,7 @@ export default function ResumeAnalysis() {
       {analysis && (
         <button
           onClick={goToJobs}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          className="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
         >
           Find Matching Jobs
         </button>
