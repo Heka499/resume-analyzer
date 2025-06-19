@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react";
 import { useResumeStore } from "@/lib/store";
 
+type Job = {
+  job_title: string;
+  employer_name: string;
+  job_city: string;
+  job_country: string;
+  job_apply_link: string;
+};
+
 const countries = [
   { label: "Finland", value: "fi" },
   { label: "Sweden", value: "se" },
@@ -17,7 +25,7 @@ export default function JobsPage() {
   const { analysis } = useResumeStore();
   const [keywords, setKeywords] = useState<string>("");
   const [country, setCountry] = useState<string>("fi");
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,7 +49,9 @@ export default function JobsPage() {
       });
 
       const data = await res.json();
-      console.log("Job Matches Response:", data);
+      if (process.env.NODE_ENV === "development") {
+        console.log("Job Matches Data:", data);
+      }
       setJobs(data.jobs || []);
     } catch (error) {
       console.error("Error fetching job matches:", error);
@@ -66,10 +76,14 @@ export default function JobsPage() {
         <select
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-1/3 bg-white text-black"
         >
           {countries.map((country) => (
-            <option key={country.value} value={country.value}>
+            <option
+              key={country.value}
+              value={country.value}
+              className="bg-white text-black"
+            >
               {country.label}
             </option>
           ))}
@@ -87,14 +101,14 @@ export default function JobsPage() {
         {jobs.map((job, index) => (
           <div key={index} className="border p-4 rounded shadow">
             <h3 className="text-xl font-semibold">{job.job_title}</h3>
-            <p className="text-gray-600">{job.employer_name}</p>
+            <p className="">Employer: {job.employer_name}</p>
             <p>
-              {job.job_city}, {job.job_country}
+              Location: {job.job_city}, {job.job_country}
             </p>
             <a
               href={job.job_apply_link}
               target="_blank"
-              className="text-blue-600 underline"
+              className="text-black bg-white rounded text-sm mt-2 p-2 inline-block"
             >
               View Job
             </a>
