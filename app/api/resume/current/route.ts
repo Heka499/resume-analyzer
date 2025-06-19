@@ -6,7 +6,9 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const sessionId = cookieStore.get("sessionId")?.value;
-    console.log("Session ID:", sessionId);
+    if (process.env.NODE_ENV === "development") {
+      console.log("Session ID:", sessionId);
+    }
     const currentResume = await prisma.resume.findFirst({
       where: { sessionId: sessionId },
     });

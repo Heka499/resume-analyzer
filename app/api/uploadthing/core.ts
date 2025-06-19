@@ -24,8 +24,9 @@ export const uploadRouter = {
     })
 
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Uploaded file url:", file.ufsUrl);
-
+      if (process.env.NODE_ENV === "development") {
+        console.log("Upload complete:", metadata, file);
+      }
       // Extract and store resume content
       await pdfParseAndStore(file.ufsUrl, metadata.sessionId);
 

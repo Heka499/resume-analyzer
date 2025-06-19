@@ -19,5 +19,7 @@ export async function pdfParseAndStore(fileUrl: string, sessionId?: string) {
     },
   });
 
-  console.log("Resume content stored successfully.");
+  if (process.env.NODE_ENV === "development") {
+    console.log("Parsed resume content:", resumeContent);
+  }
 }

@@ -11,7 +11,9 @@ export async function POST(req: NextRequest) {
   try {
     const response = await fetch(url, { headers });
     const data = await response.json();
-    console.log("Job Matches Data:", data);
+    if (process.env.NODE_ENV === "development") {
+      console.log("Job Matches Data:", data);
+    }
     return NextResponse.json({ jobs: data.data });
   } catch (error) {
     console.error("JSearch API Error:", error);

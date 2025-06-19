@@ -18,7 +18,9 @@ export default function JobMatches() {
       });
 
       const data = await res.json();
-      console.log("Job Matches Response:", data);
+      if (process.env.NODE_ENV === "development") {
+        console.log("Job Matches Response:", data);
+      }
       setJobs(data.jobs || []);
     } catch (error) {
       console.error("Error fetching job matches:", error);
