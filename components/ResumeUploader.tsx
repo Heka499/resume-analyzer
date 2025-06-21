@@ -1,6 +1,6 @@
 "use client";
 
-import { UploadButton, UploadDropzone } from "../utils/uploadthing";
+import { UploadDropzone } from "../utils/uploadthing";
 import { useRouter } from "next/navigation";
 
 export default function ResumeUploader() {
