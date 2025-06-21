@@ -2,7 +2,7 @@
 
 Resume Analyzer is a Next.js app designed to analyze and extract insights from resumes. It helps users identify key skills, experiences, and areas for improvement. Search for jobs matching your skills.
 
-Visit app [Here](https://resume-analyzer-m2n1tinum-heikki-jarvinens-projects.vercel.app/)
+Visit the app [Here](https://resume-analyzer-azure.vercel.app/)
 
 ## Features
 
