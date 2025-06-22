@@ -12,19 +12,15 @@ type Job = {
 };
 
 const countries = [
-  { label: "Finland", value: "fi" },
-  { label: "Sweden", value: "se" },
-  { label: "Norway", value: "no" },
-  { label: "Denmark", value: "dk" },
-  { label: "Germany", value: "de" },
   { label: "United States", value: "us" },
+  { label: "Germany", value: "de" },
   { label: "Remote", value: "" },
 ];
 
 export default function JobsPage() {
   const { analysis } = useResumeStore();
   const [keywords, setKeywords] = useState<string>("");
-  const [country, setCountry] = useState<string>("fi");
+  const [country, setCountry] = useState<string>("us");
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -70,7 +66,7 @@ export default function JobsPage() {
           placeholder="Enter job keywords"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full  md:w-2/3 bg-white text-black"
         />
 
         <select
@@ -91,11 +87,22 @@ export default function JobsPage() {
 
         <button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          className="bg-white text-black px-4 py-2 rounded hover:bg-gray-300 transition"
         >
           {loading ? "Searching..." : "Search Jobs"}
         </button>
       </div>
+      <p className="text-gray-500">
+        Suggestion: include job title and location in search.
+      </p>
+
+      <h2 className="text-2xl font-semibold mb-4 mt-4">Result:</h2>
+      {loading && <p className="text-gray-500">Loading jobs...</p>}
+      {!loading && jobs.length === 0 && (
+        <p className="text-gray-500">
+          No jobs found. Try different keywords or location.
+        </p>
+      )}
 
       <div className="space-y-4">
         {jobs.map((job, index) => (
@@ -108,7 +115,7 @@ export default function JobsPage() {
             <a
               href={job.job_apply_link}
               target="_blank"
-              className="text-black bg-white rounded text-sm mt-2 p-2 inline-block"
+              className="text-black bg-white rounded text-sm mt-2 p-2 inline-block hover:bg-gray-300 transition"
             >
               View Job
             </a>
