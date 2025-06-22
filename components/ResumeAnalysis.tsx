@@ -37,7 +37,7 @@ export default function ResumeAnalysis() {
       <button
         onClick={handleAnalyze}
         className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
-        disabled={loading}
+        disabled={loading || !!analysis}
       >
         {loading ? "Analyzing..." : "Analyze Resume with AI"}
       </button>
