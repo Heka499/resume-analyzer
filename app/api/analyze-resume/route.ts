@@ -24,6 +24,7 @@ export async function POST() {
             First, analyze the resume text.
             Then return **only** a valid JSON object with the following structure,
             and nothing else. Do not add commentary or explanation.
+            Choose only one most fitting jobSearchTerms based on the resume content.
             Do NOT wrap your response in markdown.
             Return only raw JSON.
 
